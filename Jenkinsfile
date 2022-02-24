@@ -1,12 +1,6 @@
 pipeline {
     agent any 
     stages {
-        stage('Login') {
-            steps {
-                bat 'docker login registry.heroku.com -u Thuy Lam -p $HEROKU_API_KEY'
-            }
-        }
-
         stage('Push to Heroku registry') {
             withCredentials([usernamePassword(credentialsId: 'dockerhubid', passwordVariable: 'password', usernameVariable: 'username')]) {
                 bat 'docker login registry.heroku.com %username% -p %password%'
