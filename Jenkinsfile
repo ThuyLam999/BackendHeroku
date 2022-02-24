@@ -1,19 +1,31 @@
 pipeline {
     agent any 
+
+    environment {
+        HEROKU_API_KEY = credentials('herokuidtest')
+    }
+
+    parameters { 
+        string(name: 'APP_NAME', defaultValue: '', description: 'What is the Heroku app name?') 
+    }
+
     stages {
-        stage('Push to Heroku registry') {
+        stage('Login') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'herokuid', passwordVariable: 'password', usernameVariable: 'username')]) {
-                    bat 'docker login registry.heroku.com -u %username% -p %password%'
-                    bat 'docker tag lptest999/docker_backendapi_test registry.heroku.com/testapi/web'
-                    bat 'docker push registry.heroku.com/testapi/web'
-                }  
+                bat 'docker login registry.heroku.com -u Thuy Lam -p $HEROKU_API_KEY'
             }
         }
 
-        stage('Release the image'){
-            steps{
-                bat 'heroku container:release web --app=testapi'
+        stage('Push to Heroku registry') {
+            steps {
+                bat 'docker tag lptest999/docker_backendapi_test registry.heroku.com/$APP_NAME/web'
+                bat 'docker push registry.heroku.com/$APP_NAME/web'
+            }
+        }
+
+        stage('Release the image') {
+            steps {
+                bat 'heroku container:release web --app=$APP_NAME'
             }
         }
     
@@ -21,15 +33,6 @@ pipeline {
             steps {
                 deleteDir()
             }
-        }
-    }
-    post {
-        success {
-            mail bcc: '', body: 'Thông báo kết quả build', cc: '', from: '', replyTo: '', subject: 'Test Run SUCCESSFUL HEROKU', to: 'thanhthuyyasou234@gmail.com'
-        }  
-
-        failure {
-            mail bcc: '', body: 'Thông báo kết quả build', cc: '', from: '', replyTo: '', subject: 'Test Run FAILED HEROKU', to: 'thanhthuyyasou234@gmail.com'
         }
     }
 }
