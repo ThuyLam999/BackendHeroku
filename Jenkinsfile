@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Push to Heroku registry') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhubid', passwordVariable: 'password', usernameVariable: 'username')]) {
+                withCredentials([usernamePassword(credentialsId: 'herokuid', passwordVariable: 'password', usernameVariable: 'username')]) {
                     bat 'docker login -u %username% -p %password% registry.heroku.com'
                     bat 'docker tag lptest999/docker_backendapi_test registry.heroku.com/test-api-9/web'
                     bat 'docker push registry.heroku.com/test-api-9/web'
