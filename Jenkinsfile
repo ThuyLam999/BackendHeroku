@@ -7,7 +7,6 @@ pipeline {
                     bat 'docker login -u %username% -p %password% registry.heroku.com'
                     bat 'docker tag lptest999/docker_backendapi_test registry.heroku.com/test-api-9/web'
                     bat 'docker push registry.heroku.com/test-api-9/web'
-                    bat 'heroku container:release web --app=test-api-9'
                 }
             }          
         }
