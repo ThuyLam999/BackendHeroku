@@ -5,7 +5,7 @@ pipeline {
             steps {
                withEnv(['PATH+HEROKU=C:\\Program Files\\heroku\\bin']) {
                     withCredentials([usernamePassword(credentialsId: 'herokuid', passwordVariable: 'password', usernameVariable: 'username')]) {
-                        bat 'C:\\Program Files\\heroku\\binheroku container:release web --app=test-api-9'
+                        bat 'heroku container:release web --app=test-api-9'
                     }
                 }
             }          
