@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Push to Heroku registry') {
             steps {
-               withCredentials([usernamePassword(credentialsId: 'herokuid', passwordVariable: 'password', usernameVariable: 'username')]) {
-                    bat 'C:\\Program Files\\heroku\\binheroku container:release web --app=test-api-9'
+                withCredentials([usernamePassword(credentialsId: 'herokuid', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    bat 'C:\Program Files\heroku\bin\heroku container:release web --app=test-api-9'
                 }
             }          
         }
