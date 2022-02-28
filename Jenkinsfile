@@ -4,10 +4,10 @@ pipeline {
         stage('Push to Heroku registry') {
             steps {
                 withEnv(['HEROKU=C:\\Program Files\\heroku\\bin']) {
-                    dir('HEROKU\\heroku')
-                    {
-                        bat 'heroku container:release web --app=test-api-9'
+                    withCredentials([usernamePassword(credentialsId: 'herokuid', passwordVariable: 'password', usernameVariable: 'username')]) {
+                        bat 'docker login -u %username% -p %password% registry.heroku.com'
                     }
+                    bat 'HEROKU container:release web --app=test-api-9'
                 }
             }           
         }
