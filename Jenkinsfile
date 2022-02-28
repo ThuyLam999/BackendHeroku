@@ -3,8 +3,11 @@ pipeline {
     stages {
         stage('Push to Heroku registry') {
             steps {
-                withEnv(['PATH+HEROKU=C:\\Program Files\\heroku\\bin']) {
-                   bat 'heroku container:release web --app=test-api-9'
+                withEnv(['HEROKU=C:\\Program Files\\heroku\\bin']) {
+                    dir('HEROKU\\heroku')
+                    {
+                        bat 'heroku container:release web --app=test-api-9'
+                    }
                 }
             }           
         }
